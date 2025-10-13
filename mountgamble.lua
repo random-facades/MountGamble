@@ -17,3 +17,10 @@ if load_error then
 else
   sprites()
 end
+
+local card_overrides, load_error = SMODS.load_file("core/mtg_card_overrides.lua")
+if load_error then
+  sendDebugMessage ("The error is: "..load_error)
+else
+  card_overrides()
+end
