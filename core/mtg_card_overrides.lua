@@ -72,7 +72,7 @@ for i, v in ipairs(mtg_suits) do
       lc_ui_atlas = 'ui_assets',
       hc_ui_atlas = 'ui_assets',
       in_pool = v.basic and basic_pool or advanced_pool,
-   }):register()
+   })
 
    local full_key = "mtg_" .. v.key
    local suit_color = HEX(v.color)
