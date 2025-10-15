@@ -81,3 +81,40 @@ for i, v in ipairs(mtg_suits) do
    G.C.SUITS[full_key] = suit_color
 end
 
+SMODS.current_mod.addAdditionalCards = function(card_protos, _de)
+   local mtg_colorless_dupes = {
+      ["Red Deck"] = 3,
+      ["Blue Deck"] = 3,
+      ["Yellow Deck"] = 3,
+      ["Green Deck"] = 3,
+      ["Black Deck"] = 3,
+      ["Magic Deck"] = 2,
+      ["Nebula Deck"] = 2,
+      ["Ghost Deck"] = 2,
+      ["Zodiac Deck"] = 1,
+      ["Anaglyph Deck"] = 1,
+      ["Plasma Deck"] = 2,
+   }
+   local mtg_colorless_to_add = mtg_colorless_dupes[G.GAME.selected_back_key.name]
+   if mtg_colorless_to_add then
+      for k, v in pairs(G.P_CARDS) do
+         local _r, _s = SMODS.Ranks[v.value].card_key, SMODS.Suits[v.suit].card_key
+         if _s == 'mtg_Colorless' then
+            for i = 1, mtg_colorless_to_add do
+               card_protos[#card_protos + 1] = { s = _s, r = _r, e = _de and _de.enhancement, d = _de and _de.edition, g =
+               _de and _de.gold_seal }
+            end
+         end
+      end
+   end
+
+   if G.GAME.selected_back_key.name == "Checkered Deck" then
+      for k, v in pairs(G.P_CARDS) do
+         local _r, _s = SMODS.Ranks[v.value].card_key, SMODS.Suits[v.suit].card_key
+         if _s == 'mtg_Black' or _s == 'mtg_Red' then
+            card_protos[#card_protos + 1] = { s = _s, r = _r, e = _de and _de.enhancement, d = _de and _de.edition, g =
+            _de and _de.gold_seal }
+         end
+      end
+   end
+end
