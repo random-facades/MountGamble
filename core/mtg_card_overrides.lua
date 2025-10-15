@@ -118,3 +118,46 @@ SMODS.current_mod.addAdditionalCards = function(card_protos, _de)
       end
    end
 end
+
+
+SMODS.Mods['MountGamble'].has_no_suit = SMODS.has_no_suit
+function SMODS.has_no_suit(card)
+   if card.base.suit == 'mtg_Colorless' then
+      for k, _ in pairs(SMODS.get_enhancements(card)) do
+         if k == 'm_wild' or G.P_CENTERS[k].any_suit then return false end
+      end
+      return true
+   end
+   return SMODS.Mods['MountGamble'].has_no_suit(card)
+end
+
+
+--[[  TODO: Multi-color suits
+local _Card_is_suit = Card.is_suit
+function Card:is_suit(suit, bypass_debuff, flush_calc)
+    if flush_calc then
+        if SMODS.has_no_suit(self) then
+            return false
+        end
+        if SMODS.has_any_suit(self) and self:can_calculate() then
+            return true
+        end
+        if SMODS.smeared_check(self, suit) then
+            return true
+        end
+        return self.base.suit == suit
+    else
+        if self.debuff and not bypass_debuff then return end
+        if SMODS.has_no_suit(self) then
+            return false
+        end
+        if SMODS.has_any_suit(self) then
+            return true
+        end
+        if SMODS.smeared_check(self, suit) then
+            return true
+        end
+        return self.base.suit == suit
+    end
+end
+--]]

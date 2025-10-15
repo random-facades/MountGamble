@@ -24,3 +24,12 @@ end
 
 '''
 
+[[patches]]
+[patches.pattern]
+target = '=[SMODS _ "src/overrides.lua"]'
+pattern = 'local v_nr, v_ns = SMODS.has_no_rank(v), SMODS.has_no_suit(v)'
+position = 'at'
+match_indent = true
+payload = 'local v_nr, v_ns = SMODS.has_no_rank(v), SMODS.Mods["MountGamble"].has_no_suit(v)'
+
+
